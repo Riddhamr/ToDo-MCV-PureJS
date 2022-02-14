@@ -5,7 +5,6 @@ class model {
     }
 
     _commit(todos) {
-        console.log("model", "_commit");
         this.onTodoListChange(this.todos);
         localStorage.setItem("todos", JSON.stringify(todos));
     }
