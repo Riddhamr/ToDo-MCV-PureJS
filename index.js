@@ -1,6 +1,5 @@
 class model {
     constructor() {
-        console.log("model", "const");
         this.todos = JSON.parse(localStorage.getItem("todos")) || [];
     }
 
@@ -10,7 +9,6 @@ class model {
     }
 
     addTodo(todoText) {
-        console.log("model", "onTodoListChange");
         const newTodo = {
             id:
                 this.todos.length > 0
@@ -24,7 +22,6 @@ class model {
     }
 
     editTodo(id, updateText) {
-        console.log("model", "editTodo");
         this.todos = this.todos.map((todo) =>
             todo.id === id
                 ? {
@@ -37,13 +34,11 @@ class model {
         this._commit(this.todos);
     }
     deleteTodo(id) {
-        console.log("model", "deleteTodo");
         this.todos = this.todos.filter((todo) => todo.id !== id);
         this._commit(this.todos);
     }
 
     toggleTodo(id) {
-        console.log("model", "toggleTodo");
         this.todos = this.todos.map((todo) =>
             todo.id === id
                 ? {
@@ -57,14 +52,12 @@ class model {
     }
 
     bindTodoListChanged(callback) {
-        console.log("model", "bindTodoListCHanged");
         this.onTodoListChange = callback;
     }
 }
 
 class view {
     constructor() {
-        console.log("view", "const");
         this.app = this.getElement("#root");
 
         this.title = this.createElement("h1");
@@ -91,7 +84,6 @@ class view {
     }
 
     get _todoText() {
-        console.log("view", "_todoText");
         return this.input.value;
     }
 
@@ -111,8 +103,6 @@ class view {
     }
 
     displayTodos(todos) {
-        console.log("view", "display todo");
-
         while (this.todoList.firstChild) {
             this.todoList.removeChild(this.todoList.firstChild);
         }
@@ -160,7 +150,6 @@ class view {
     }
 
     bindAddTodo(handler) {
-        console.log("view", "bindAddtodo");
         this.form.addEventListener("submit", (event) => {
             event.preventDefault();
 
@@ -172,7 +161,6 @@ class view {
     }
 
     bindDeleteTodo(handler) {
-        console.log("view", "bindDeleteTodo");
         this.todoList.addEventListener("click", (event) => {
             if (event.target.className === "delete") {
                 const id = parseInt(event.target.parentNode.id);
@@ -183,7 +171,6 @@ class view {
 
     bindToggleTodo(handler) {
         this.todoList.addEventListener("change", (event) => {
-            console.log("view", "bindToggleTodo");
             if (event.target.type === "checkbox") {
                 const id = parseInt(event.target.parentNode.id);
                 handler(id);
@@ -192,7 +179,6 @@ class view {
     }
 
     bindEditTodo(handler) {
-        console.log("view", "bindEditTodo");
         this.todoList.addEventListener("focusout", (event) => {
             if (this._temporaryTodoText) {
                 const id = parseInt(event.target.parentNode.id);
@@ -206,7 +192,6 @@ class view {
 
 class controller {
     constructor(model, view) {
-        console.log("cont", "const");
         this.model = model;
         this.view = view;
 
@@ -219,27 +204,22 @@ class controller {
     }
 
     onTodoListChange = (todos) => {
-        console.log("cont", "onTodoListChange");
         this.view.displayTodos(todos);
     };
 
     handleAddTodo = (todoText) => {
-        console.log("cont", "handleADDtodo");
         this.model.addTodo(todoText);
     };
 
     handleEditTodo = (id, todoText) => {
-        console.log("cont", "handleEditTodo");
         this.model.editTodo(id, todoText);
     };
 
     handleDeleteTodo = (id) => {
-        console.log("cont", "handleDeleteTodo");
         this.model.deleteTodo(id);
     };
 
     handleToggleTodo = (id) => {
-        console.log("cont", "handleToggleTodo");
         this.model.toggleTodo(id);
     };
 }
